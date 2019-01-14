@@ -1,18 +1,21 @@
 class DFA {
   constructor(tuple) {
     this.tuple = tuple;
+    this.transitions = tuple.delta;
+    this.initialState = tuple["start-state"];
+    this.finalStates = tuple["final-states"];
   };
 
   doesAccept(string){
     let setOfChars = string.split('');
-    let currentState = this.tuple['start-state'];
-    let finalState = this.transition(currentState, setOfChars);
-    return this.tuple['final-states'].includes(finalState);
+    let currentState = this.initialState;
+    let finalState = this.getFinalState(currentState, setOfChars);
+    return this.finalStates.includes(finalState);
   };
 
-  transition(state, setOfChars){
+  getFinalState(state, setOfChars) {
     return setOfChars.reduce((state, char) => {
-      return this.tuple.delta[state][char];
+      return this.transitions[state][char];
     }, state);
   };
 }
